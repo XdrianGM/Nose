@@ -96,7 +96,7 @@ install_theme() {
         break
         ;;
       2)
-        THEME_URL=$(echo -e "https://github.com/XdrianGM/xd/raw/main/C1.zip")
+        THEME_URL=$(echo -e "https://github.com/XdrianGM/xd/raw/main/billing.zip")
         break
         ;;
       3)
