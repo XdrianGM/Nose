@@ -92,7 +92,7 @@ install_theme() {
     read -r SELECT_THEME
     case "$SELECT_THEME" in
       1)
-        THEME_URL=$(echo -e "https://github.com/DITZZ112/fox/raw/main/C1.stellar.zip")
+        THEME_URL=$(echo -e "https://github.com/XdrianGM/xd/raw/main/stellar.zip")
         break
         ;;
       2)
