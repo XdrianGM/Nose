@@ -4,7 +4,7 @@
 DB_NAME="paymenter"
 DB_USER="paymenter_user"
 DB_PASS="password123"
-DOMAIN="clientes.starlights.uk"
+DOMAIN="star.starlights.uk"
 
 # Actualizar y preparar el sistema
 sudo apt update && sudo apt upgrade -y
