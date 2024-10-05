@@ -91,18 +91,6 @@ install_theme() {
         ;;
     esac
   done
-  
-  if [ -d /var/www/pterodactyl ]; then
-    echo -e "${YELLOW}Tema sudah terinstal. Apakah deseas actualizar o desinstalar el tema actual? (a/d):${NC}"
-    read -r CHOICE
-    if [ "$CHOICE" = "d" ]; then
-      sudo rm -rf /var/www/pterodactyl
-      echo -e "${GREEN}Tema desinstalado correctamente.${NC}"
-    elif [ "$CHOICE" != "a" ]; then
-      echo -e "${RED}Opción no válida.${NC}"
-      return
-    fi
-  fi
 
   wget -q "$THEME_URL"
   sudo unzip -o "$(basename "$THEME_URL")"
