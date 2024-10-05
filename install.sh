@@ -12,12 +12,12 @@ display_welcome() {
   echo -e ""
   echo -e "${BLUE}[+] =============================================== [+]${NC}"
   echo -e "${BLUE}[+]                                                 [+]${NC}"
-  echo -e "${BLUE}[+]                AUTO INSTALLER THEME             [+]${NC}"
+  echo -e "${BLUE}[+]                AUTO INSTALLER THEMA             [+]${NC}"
   echo -e "${BLUE}[+]                  © ZERONE OFFC                [+]${NC}"
   echo -e "${BLUE}[+]                                                 [+]${NC}"
   echo -e "${BLUE}[+] =============================================== [+]${NC}"
   echo -e ""
-  echo -e "script ini dibuat untuk mempermudah penginstalasian theme pterodactyl,"
+  echo -e "script ini di buat untuk mempermudah penginstalasian thema pterodactyle,"
   echo -e "dilarang keras untuk memperjual belikan."
   echo -e ""
   echo -e "𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣 :"
@@ -30,7 +30,7 @@ display_welcome() {
   clear
 }
 
-# Update and install jq
+#Update and install jq
 install_jq() {
   echo -e "                                                       "
   echo -e "${BLUE}[+] =============================================== [+]${NC}"
@@ -55,42 +55,8 @@ install_jq() {
   clear
 }
 
-# Check user token
-check_token() {
-  echo -e "                                                       "
-  echo -e "${BLUE}[+] =============================================== [+]${NC}"
-  echo -e "${BLUE}[+]               LICENSY ZERONE OFFC             [+]${NC}"
-  echo -e "${BLUE}[+] =============================================== [+]${NC}"
-  echo -e "                                                       "
-  TOKEN=$(jq -r '.token' token.json)
-
-  echo -e "${YELLOW}MASUKAN AKSES TOKEN :${NC}"
-  read -r USER_TOKEN
-
-  if [ "$USER_TOKEN" = "zerone" ]; then
-    echo -e "${GREEN}AKSES BERHASIL${NC}"
-  else
-    echo -e "${GREEN}AKSES GAGAL${NC}"
-    exit 1
-  fi
-  clear
-}
-
-# Check if theme is already installed
-check_installed_theme() {
-  if [ -d "/var/www/pterodactyl/resources/scripts/components/dashboard" ]; then
-    echo -e "${YELLOW}Tema ya instalado. ¿Deseas actualizarlo? (y/n):${NC}"
-    read -r UPDATE_CHOICE
-    if [ "$UPDATE_CHOICE" != "y" ]; then
-      echo "Instalación cancelada."
-      exit 0
-    fi
-  fi
-}
-
 # Install theme
 install_theme() {
-  check_installed_theme
   while true; do
     echo -e "                                                       "
     echo -e "${BLUE}[+] =============================================== [+]${NC}"
@@ -106,15 +72,15 @@ install_theme() {
     read -r SELECT_THEME
     case "$SELECT_THEME" in
       1)
-        THEME_URL="https://github.com/XdrianGM/xd/raw/main/stellar.zip"
+        THEME_URL=$(echo -e "https://github.com/XdrianGM/xd/raw/main/stellar.zip")
         break
         ;;
       2)
-        THEME_URL="https://github.com/XdrianGM/xd/raw/main/billing.zip"
+        THEME_URL=$(echo -e "https://github.com/XdrianGM/xd/raw/main/billing.zip")
         break
         ;;
       3)
-        THEME_URL="https://github.com/DITZZ112/foxxhostt/raw/main/C3.zip"
+        THEME_URL=$(echo -e "\x68\x74\x74\x70\x73\x3A\x2F\x2F\x67\x69\x74\x68\x75\x62\x2E\x63\x6F\x6D\x2F\x44\x49\x54\x5A\x5A\x31\x31\x32\x2F\x66\x6F\x78\x78\x68\x6F\x73\x74\x74\x2F\x72\x61\x77\x2F\x6D\x61\x69\x6E\x2F\x43\x33\x2E\x7A\x69\x70")
         break
         ;; 
       x)
@@ -125,30 +91,46 @@ install_theme() {
         ;;
     esac
   done
-
-  # Actualizar el tema solo si ya está instalado
-  if [ -e /root/pterodactyl ]; then
-    sudo rm -rf /root/pterodactyl
+  
+  if [ -d /var/www/pterodactyl ]; then
+    echo -e "${YELLOW}Tema sudah terinstal. Apakah deseas actualizar o desinstalar el tema actual? (a/d):${NC}"
+    read -r CHOICE
+    if [ "$CHOICE" = "d" ]; then
+      sudo rm -rf /var/www/pterodactyl
+      echo -e "${GREEN}Tema desinstalado correctamente.${NC}"
+    elif [ "$CHOICE" != "a" ]; then
+      echo -e "${RED}Opción no válida.${NC}"
+      return
+    fi
   fi
+
   wget -q "$THEME_URL"
   sudo unzip -o "$(basename "$THEME_URL")"
-
+  
   echo -e "                                                       "
   echo -e "${BLUE}[+] =============================================== [+]${NC}"
-  echo -e "${BLUE}[+]                  ACTUALIZANDO THEME               [+]${NC}"
+  echo -e "${BLUE}[+]                  INSTALLASI THEMA               [+]${NC}"
   echo -e "${BLUE}[+] =============================================== [+]${NC}"
-  
+  echo -e "                                                                   "
   sudo cp -rfT /root/pterodactyl /var/www/pterodactyl
-  php artisan view:clear
+  curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+  sudo apt install -y nodejs
+  sudo npm i -g yarn
+  cd /var/www/pterodactyl
+  yarn add react-feather
+  php artisan migrate
   yarn build:production
-  
+  php artisan view:clear
+  sudo rm /root/C2.zip
+  sudo rm -rf /root/pterodactyl
+
+  echo -e "                                                       "
   echo -e "${GREEN}[+] =============================================== [+]${NC}"
-  echo -e "${GREEN}[+]              ACTUALIZACIÓN COMPLETA               [+]${NC}"
+  echo -e "${GREEN}[+]                   INSTALL SUCCESS               [+]${NC}"
   echo -e "${GREEN}[+] =============================================== [+]${NC}"
   echo -e ""
   sleep 2
   clear
-  return
 }
 
 # Uninstall theme
@@ -171,7 +153,6 @@ uninstall_theme() {
 # Main script
 display_welcome
 install_jq
-check_token
 
 while true; do
   clear
