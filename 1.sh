@@ -4,7 +4,7 @@
 DB_NAME="jexactyl"
 DB_USER="jexactyluser"
 DB_PASS="TuContraseñaSegura"
-DOMAIN="panel.starlights.uk"
+DOMAIN="info.starlights.uk"
 APP_PATH="/var/www/jexactyl"
 
 # Actualizar el sistema
